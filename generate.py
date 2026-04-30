@@ -16,7 +16,7 @@ import pandas as pd
 from pykrx import stock
 
 # ── 설정 ──────────────────────────────────────────────────────────────────────
-START_DATE = os.environ.get("START_DATE", "20200102")   # 기준일 (환경변수로 덮어쓰기 가능)
+START_DATE = "20200102"   # 기준일 고정   # 기준일 (환경변수로 덮어쓰기 가능)
 OUTPUT_FILE = "index.html"
 
 # 추적할 종목 (티커, 표시명)
