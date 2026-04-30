@@ -8,7 +8,6 @@
   - 수익률 - 시총증가: 수익률(%) - 시가총액 증가율(%)  →  자사주 매입 효과 등 측정
 """
 
-import os
 import time
 from datetime import datetime, timedelta
 
@@ -16,8 +15,7 @@ import pandas as pd
 from pykrx import stock
 
 # ── 설정 ──────────────────────────────────────────────────────────────────────
-START_DATE = "20200102"   # 기준일 고정   # 기준일 (환경변수로 덮어쓰기 가능)
-OUTPUT_FILE = "index.html"
+START_DATE = "20200102"   # 기준일
 
 # 추적할 종목 (티커, 표시명)
 TICKERS = [
@@ -43,17 +41,19 @@ TICKERS = [
     ("028260", "삼성물산"),
 ]
 
+OUTPUT_FILE = "index.html"
+
 # ── 데이터 수집 ────────────────────────────────────────────────────────────────
 
 def last_trading_day() -> str:
-    """오늘 또는 가장 최근 거래일 반환 (YYYYMMDD)"""
-    today = datetime.today()
-    # 주말이면 금요일로
-    if today.weekday() == 5:   # 토
-        today -= timedelta(days=1)
-    elif today.weekday() == 6: # 일
-        today -= timedelta(days=2)
-    return today.strftime("%Y%m%d")
+    """pykrx로 실제 마지막 거래일 조회 (공휴일·주말 자동 처리)"""
+    today = datetime.today().strftime("%Y%m%d")
+    ohlcv = stock.get_market_ohlcv_by_date("20260101", today, "005930")
+    if ohlcv is not None and not ohlcv.empty:
+        return ohlcv.index[-1].strftime("%Y%m%d")
+    # fallback: 3일 전
+    d = datetime.today() - timedelta(days=3)
+    return d.strftime("%Y%m%d")
 
 
 def fetch_metrics(ticker: str, name: str, start: str, end: str) -> dict | None:
@@ -104,7 +104,6 @@ def fetch_metrics(ticker: str, name: str, start: str, end: str) -> dict | None:
 # ── HTML 생성 ──────────────────────────────────────────────────────────────────
 
 def row_bg(ret: int | None) -> str:
-    """수익률 기준 행 배경색"""
     if ret is None:
         return ""
     if ret >= 300:
@@ -116,16 +115,14 @@ def row_bg(ret: int | None) -> str:
     return ""
 
 
-def cell_class(val: int | None, thresholds=(100, 30, 0)) -> str:
-    """수익률-시총증가 셀 색상"""
+def cell_class(val: int | None) -> str:
     if val is None:
         return ""
-    hi, mid, lo = thresholds
-    if val >= hi:
+    if val >= 100:
         return "cell-yellow"
-    if val >= mid:
+    if val >= 30:
         return "cell-green"
-    if val < lo:
+    if val < 0:
         return "cell-pink"
     return ""
 
@@ -138,11 +135,12 @@ def fmt_ratio(v) -> str:
     return f"{v:.2f}" if v is not None else "—"
 
 
-def build_html(rows: list[dict], generated_at: str) -> str:
+def build_html(rows: list, generated_at: str, end_date: str) -> str:
+    end_fmt = f"{end_date[:4]}.{end_date[4:6]}.{end_date[6:]}"
     tbody = ""
     for r in rows:
-        rc   = row_bg(r["ret"])
-        cc   = cell_class(r["ret_minus_cap"])
+        rc  = row_bg(r["ret"])
+        cc  = cell_class(r["ret_minus_cap"])
         ret_str = f"{r['ret']}%" if r["ret"] is not None else "—"
         tbody += f"""
         <tr class="{rc}">
@@ -157,7 +155,7 @@ def build_html(rows: list[dict], generated_at: str) -> str:
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>한국 주요 종목 추적 (기준일: {START_DATE[:4]}.{START_DATE[4:6]}.{START_DATE[6:]})</title>
+  <title>한국 주요 종목 추적</title>
   <style>
     * {{ box-sizing: border-box; margin: 0; padding: 0; }}
     body {{
@@ -170,26 +168,10 @@ def build_html(rows: list[dict], generated_at: str) -> str:
       align-items: center;
       padding: 2rem 1rem;
     }}
-    h1 {{
-      font-size: 1.3rem;
-      margin-bottom: 0.3rem;
-      color: #fff;
-    }}
-    .subtitle {{
-      font-size: 0.8rem;
-      color: #888;
-      margin-bottom: 1.5rem;
-    }}
-    .updated {{
-      font-size: 0.75rem;
-      color: #666;
-      margin-bottom: 1.5rem;
-    }}
-    .table-wrap {{
-      overflow-x: auto;
-      width: 100%;
-      max-width: 680px;
-    }}
+    h1 {{ font-size: 1.3rem; margin-bottom: 0.3rem; color: #fff; }}
+    .subtitle {{ font-size: 0.8rem; color: #888; margin-bottom: 0.4rem; }}
+    .updated  {{ font-size: 0.75rem; color: #666; margin-bottom: 1.5rem; }}
+    .table-wrap {{ overflow-x: auto; width: 100%; max-width: 680px; }}
     table {{
       width: 100%;
       border-collapse: collapse;
@@ -198,9 +180,7 @@ def build_html(rows: list[dict], generated_at: str) -> str:
       overflow: hidden;
       box-shadow: 0 4px 24px rgba(0,0,0,0.5);
     }}
-    thead tr {{
-      background: #0f3460;
-    }}
+    thead tr {{ background: #0f3460; }}
     th {{
       padding: 12px 16px;
       font-size: 0.78rem;
@@ -220,22 +200,19 @@ def build_html(rows: list[dict], generated_at: str) -> str:
       font-weight: 700;
       color: #fff;
       text-align: left;
-      display: flex;
-      flex-direction: column;
     }}
     td.name .ticker {{
+      display: block;
       font-size: 0.7rem;
       font-weight: 400;
-      color: #667;
+      color: #556;
     }}
     td.num {{ text-align: right; font-variant-numeric: tabular-nums; }}
 
-    /* 행 배경 */
-    tr.row-yellow td  {{ background: rgba(255, 230, 0, 0.18); }}
-    tr.row-green  td  {{ background: rgba(80, 200, 100, 0.15); }}
-    tr.row-pink   td  {{ background: rgba(230, 100, 100, 0.13); }}
+    tr.row-yellow td {{ background: rgba(255,230,0,0.18); }}
+    tr.row-green  td {{ background: rgba(80,200,100,0.15); }}
+    tr.row-pink   td {{ background: rgba(230,100,100,0.13); }}
 
-    /* 개별 셀 */
     td.cell-yellow {{ color: #ffe600; font-weight: 700; }}
     td.cell-green  {{ color: #50c864; font-weight: 600; }}
     td.cell-pink   {{ color: #ff7070; }}
@@ -254,10 +231,7 @@ def build_html(rows: list[dict], generated_at: str) -> str:
       align-items: center;
       gap: 0.35rem;
     }}
-    .dot {{
-      width: 10px; height: 10px;
-      border-radius: 2px;
-    }}
+    .dot {{ width: 10px; height: 10px; border-radius: 2px; }}
     .dot-y {{ background: rgba(255,230,0,0.6); }}
     .dot-g {{ background: rgba(80,200,100,0.5); }}
     .dot-p {{ background: rgba(230,100,100,0.45); }}
@@ -265,7 +239,7 @@ def build_html(rows: list[dict], generated_at: str) -> str:
 </head>
 <body>
   <h1>🇰🇷 한국 주요 종목 추적</h1>
-  <div class="subtitle">기준일: {START_DATE[:4]}.{START_DATE[4:6]}.{START_DATE[6:]} 종가 기준</div>
+  <div class="subtitle">기준일: {START_DATE[:4]}.{START_DATE[4:6]}.{START_DATE[6:]} → {end_fmt} 종가 기준</div>
   <div class="updated">마지막 업데이트: {generated_at} (KST)</div>
   <div class="table-wrap">
     <table>
@@ -307,12 +281,12 @@ def main():
         row = fetch_metrics(ticker, name, START_DATE, end_date)
         if row:
             results.append(row)
-        time.sleep(0.5)   # pykrx 요청 간격
+        time.sleep(0.5)
 
     # 수익률 내림차순 정렬
     results.sort(key=lambda x: x["ret"] if x["ret"] is not None else -9999, reverse=True)
 
-    html = build_html(results, generated_at)
+    html = build_html(results, generated_at, end_date)
     with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
         f.write(html)
 
