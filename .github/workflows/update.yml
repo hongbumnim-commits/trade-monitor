@@ -35,7 +35,8 @@ jobs:
 
       - name: 🔄 데이터 수집 및 HTML 생성
         env:
-          START_DATE: ${{ github.event.inputs.start_date || '20200102' }}
+        START_DATE: ${{ github.event.inputs.start_date || '20200102' }}
+        DATA_GO_KR_API_KEY: ${{ secrets.DATA_GO_KR_API_KEY }}
         run: python generate.py
 
       - name: 💾 변경사항 커밋 & 푸시
