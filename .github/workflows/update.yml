@@ -7,11 +7,6 @@ on:
 
   # 수동으로도 실행 가능
   workflow_dispatch:
-    inputs:
-      start_date:
-        description: '기준일 (YYYYMMDD, 기본값: 20200102)'
-        required: false
-        default: '20200102'
 
 permissions:
   contents: write   # index.html 커밋을 위해 필요
@@ -35,7 +30,6 @@ jobs:
 
       - name: 🔄 데이터 수집 및 HTML 생성
         env:
-          START_DATE: ${{ github.event.inputs.start_date || '20200102' }}
           DATA_GO_KR_API_KEY: ${{ secrets.DATA_GO_KR_API_KEY }}
         run: python generate.py
 
@@ -44,7 +38,6 @@ jobs:
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add index.html
-          # 변경이 없으면 커밋하지 않음
           git diff --staged --quiet && echo "변경 없음 — 스킵" || \
             git commit -m "📊 테이블 업데이트: $(TZ='Asia/Seoul' date '+%Y-%m-%d %H:%M KST')"
           git push
