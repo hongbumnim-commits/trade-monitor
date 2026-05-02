@@ -2,15 +2,15 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>한국 거래대금 상위 종목</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>거래대금 상위 종목 1주 수익률</title>
   <style>
     *{box-sizing:border-box;margin:0;padding:0}
     body{font-family:-apple-system,'Malgun Gothic',sans-serif;background:#1a1a2e;color:#e0e0e0;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:2rem 1rem}
     h1{font-size:1.3rem;margin-bottom:.3rem;color:#fff}
-    .subtitle{font-size:.8rem;color:#888;margin-bottom:.3rem}
-    .updated{font-size:.72rem;color:#555;margin-bottom:1.5rem}
-    .wrap{overflow-x:auto;width:100%;max-width:900px}
+    .sub{font-size:.8rem;color:#888;margin-bottom:.25rem}
+    .upd{font-size:.72rem;color:#555;margin-bottom:1.5rem}
+    .wrap{overflow-x:auto;width:100%;max-width:960px}
     table{width:100%;border-collapse:collapse;background:#16213e;border-radius:12px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,.5)}
     thead tr{background:#0f3460}
     th{padding:10px 12px;font-size:.72rem;color:#a0b4d0;font-weight:600;text-align:right;white-space:nowrap}
@@ -18,269 +18,212 @@
     td{padding:9px 12px;font-size:.83rem;border-bottom:1px solid #1e2d4a}
     tr:last-child td{border-bottom:none}
     tr:hover td{background:rgba(255,255,255,.03)}
-    td.name{font-weight:700;color:#fff;text-align:left;min-width:120px}
-    td.name .ticker{display:block;font-size:.68rem;font-weight:400;color:#445}
-    td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+    td.name{font-weight:700;color:#fff;text-align:left;min-width:110px}
+    td.name .tc{display:block;font-size:.68rem;font-weight:400;color:#445}
+    td.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
   </style>
 </head>
 <body>
-  <h1>🇰🇷 거래대금 상위 20개 종목</h1>
-  <div class="subtitle">기간: 2026.04.24 → 2026.04.29 (1주일 수익률)</div>
-  <div class="updated">업데이트: 2026-05-02 19:02 KST</div>
+  <h1>🇰🇷 거래대금 상위 19개 종목</h1>
+  <div class="sub">기간: 2026.04.24 → 2026.04.29 (1주일 수익률)</div>
+  <div class="upd">업데이트: 2026-05-02 19:06 KST</div>
   <div class="wrap">
     <table>
-      <thead>
-        <tr>
-          <th>종목</th>
-          <th>현재가</th>
-          <th>전일대비</th>
-          <th>1주 수익률</th>
-          <th>1주전 종가</th>
-          <th>거래대금</th>
-          <th>거래대금증가</th>
-          <th>수익률-시총증가</th>
-        </tr>
-      </thead>
+      <thead><tr>
+        <th>종목</th><th>현재가</th><th>전일대비</th>
+        <th>1주 수익률</th><th>1주전 종가</th>
+        <th>거래대금</th><th>거래대금증가</th><th>수익률-시총증가</th>
+      </tr></thead>
       <tbody>
       <tr>
-        <td class="name">
-          두산<span class="ticker">000150</span>
-        </td>
-        <td class="num" style="color:#e0e0e0">1,572,000원</td>
-        <td class="num" style="color:#4fc3f7">-.69%</td>
-        <td class="num" style="color:#ff5b5b;font-weight:600">+15794.8%</td>
-        <td class="num" style="color:#888">9,890원</td>
-        <td class="num">821억</td>
-        <td class="num">120.17x</td>
-        <td class="num" style="color:#ffe600">+6505.9%</td>
+        <td class="name">SK증권<span class="tc">001510</span></td>
+        <td class="n">5,320원</td>
+        <td class="n" style="color:#4fc3f7">-3.45%</td>
+        <td class="n" style="color:#ff5b5b;font-weight:700">+185.6%</td>
+        <td class="n" style="color:#888">1,863원</td>
+        <td class="n">1,616억</td>
+        <td class="n">—</td>
+        <td class="n" style="color:#ffe600">+142.8%</td>
       </tr>
       <tr>
-        <td class="name">
-          SK하이닉스<span class="ticker">000660</span>
-        </td>
-        <td class="num" style="color:#e0e0e0">1,293,000원</td>
-        <td class="num" style="color:#4fc3f7">-.54%</td>
-        <td class="num" style="color:#ff5b5b;font-weight:600">+12973.8%</td>
-        <td class="num" style="color:#888">9,890원</td>
-        <td class="num">38,913억</td>
-        <td class="num">5692.28x</td>
-        <td class="num" style="color:#888">-326800.2%</td>
+        <td class="name">진흥기업<span class="tc">002780</span></td>
+        <td class="n">1,458원</td>
+        <td class="n" style="color:#ff5b5b">7.6%</td>
+        <td class="n" style="color:#ff5b5b;font-weight:700">+42.4%</td>
+        <td class="n" style="color:#888">1,024원</td>
+        <td class="n">475억</td>
+        <td class="n">17.27x</td>
+        <td class="n" style="color:#888">+0.0%</td>
       </tr>
       <tr>
-        <td class="name">
-          두산우<span class="ticker">000155</span>
-        </td>
-        <td class="num" style="color:#e0e0e0">629,000원</td>
-        <td class="num" style="color:#ff5b5b">.16%</td>
-        <td class="num" style="color:#ff5b5b;font-weight:600">+6260.0%</td>
-        <td class="num" style="color:#888">9,890원</td>
-        <td class="num">95억</td>
-        <td class="num">13.90x</td>
-        <td class="num" style="color:#ffe600">+5432.9%</td>
+        <td class="name">휴스틸<span class="tc">005010</span></td>
+        <td class="n">7,120원</td>
+        <td class="n" style="color:#ff5b5b">5.64%</td>
+        <td class="n" style="color:#ff5b5b;font-weight:700">+41.6%</td>
+        <td class="n" style="color:#888">5,030원</td>
+        <td class="n">968억</td>
+        <td class="n">18.27x</td>
+        <td class="n" style="color:#888">+0.0%</td>
       </tr>
       <tr>
-        <td class="name">
-          삼성화재<span class="ticker">000810</span>
-        </td>
-        <td class="num" style="color:#e0e0e0">464,000원</td>
-        <td class="num" style="color:#4fc3f7">-3.93%</td>
-        <td class="num" style="color:#ff5b5b;font-weight:600">+4591.6%</td>
-        <td class="num" style="color:#888">9,890원</td>
-        <td class="num">647억</td>
-        <td class="num">94.71x</td>
-        <td class="num" style="color:#888">-2949.0%</td>
+        <td class="name">송원산업<span class="tc">004430</span></td>
+        <td class="n">14,800원</td>
+        <td class="n" style="color:#ff5b5b">1.65%</td>
+        <td class="n" style="color:#ff5b5b;font-weight:700">+39.1%</td>
+        <td class="n" style="color:#888">10,640원</td>
+        <td class="n">545억</td>
+        <td class="n">23.56x</td>
+        <td class="n" style="color:#888">+0.0%</td>
       </tr>
       <tr>
-        <td class="name">
-          삼성화재우<span class="ticker">000815</span>
-        </td>
-        <td class="num" style="color:#e0e0e0">371,000원</td>
-        <td class="num" style="color:#4fc3f7">-1.85%</td>
-        <td class="num" style="color:#ff5b5b;font-weight:600">+3651.3%</td>
-        <td class="num" style="color:#888">9,890원</td>
-        <td class="num">40억</td>
-        <td class="num">5.86x</td>
-        <td class="num" style="color:#ffe600">+3339.8%</td>
+        <td class="name">오가닉티코스메틱<span class="tc">900300</span></td>
+        <td class="n">253원</td>
+        <td class="n" style="color:#ff5b5b">10.48%</td>
+        <td class="n" style="color:#ff5b5b;font-weight:700">+34.6%</td>
+        <td class="n" style="color:#888">188원</td>
+        <td class="n">415억</td>
+        <td class="n">5.52x</td>
+        <td class="n" style="color:#888">+0.0%</td>
       </tr>
       <tr>
-        <td class="name">
-          CJ<span class="ticker">001040</span>
-        </td>
-        <td class="num" style="color:#e0e0e0">227,500원</td>
-        <td class="num" style="color:#ff5b5b">2.48%</td>
-        <td class="num" style="color:#ff5b5b;font-weight:600">+2200.3%</td>
-        <td class="num" style="color:#888">9,890원</td>
-        <td class="num">251억</td>
-        <td class="num">36.77x</td>
-        <td class="num" style="color:#888">-147.8%</td>
+        <td class="name">알루코<span class="tc">001780</span></td>
+        <td class="n">3,260원</td>
+        <td class="n" style="color:#4fc3f7">-5.37%</td>
+        <td class="n" style="color:#ff5b5b;font-weight:700">+29.6%</td>
+        <td class="n" style="color:#888">2,515원</td>
+        <td class="n">633억</td>
+        <td class="n">11.93x</td>
+        <td class="n" style="color:#888">+0.0%</td>
       </tr>
       <tr>
-        <td class="name">
-          가온전선<span class="ticker">000500</span>
-        </td>
-        <td class="num" style="color:#e0e0e0">217,000원</td>
-        <td class="num" style="color:#ff5b5b">0%</td>
-        <td class="num" style="color:#ff5b5b;font-weight:600">+2094.1%</td>
-        <td class="num" style="color:#888">9,890원</td>
-        <td class="num">302억</td>
-        <td class="num">44.25x</td>
-        <td class="num" style="color:#ffe600">+870.1%</td>
+        <td class="name">대한전선<span class="tc">001440</span></td>
+        <td class="n">51,200원</td>
+        <td class="n" style="color:#ff5b5b">11.55%</td>
+        <td class="n" style="color:#ff5b5b;font-weight:700">+25.3%</td>
+        <td class="n" style="color:#888">40,850원</td>
+        <td class="n">15,068억</td>
+        <td class="n">1.79x</td>
+        <td class="n" style="color:#888">+0.0%</td>
       </tr>
       <tr>
-        <td class="name">
-          현대건설<span class="ticker">000720</span>
-        </td>
-        <td class="num" style="color:#e0e0e0">168,600원</td>
-        <td class="num" style="color:#ff5b5b">.9%</td>
-        <td class="num" style="color:#ff5b5b;font-weight:600">+1604.8%</td>
-        <td class="num" style="color:#888">9,890원</td>
-        <td class="num">1,389억</td>
-        <td class="num">203.30x</td>
-        <td class="num" style="color:#888">-5219.6%</td>
+        <td class="name">삼천당제약<span class="tc">000250</span></td>
+        <td class="n">443,000원</td>
+        <td class="n" style="color:#ff5b5b">2.55%</td>
+        <td class="n" style="color:#ff5b5b;font-weight:700">+16.6%</td>
+        <td class="n" style="color:#888">380,000원</td>
+        <td class="n">586억</td>
+        <td class="n">0.32x</td>
+        <td class="n" style="color:#888">+0.0%</td>
       </tr>
       <tr>
-        <td class="name">
-          기아<span class="ticker">000270</span>
-        </td>
-        <td class="num" style="color:#e0e0e0">156,900원</td>
-        <td class="num" style="color:#ff5b5b">.84%</td>
-        <td class="num" style="color:#ff5b5b;font-weight:600">+1486.5%</td>
-        <td class="num" style="color:#888">9,890원</td>
-        <td class="num">1,133억</td>
-        <td class="num">165.88x</td>
-        <td class="num" style="color:#888">-21005.7%</td>
+        <td class="name">삼화콘덴서<span class="tc">001820</span></td>
+        <td class="n">71,000원</td>
+        <td class="n" style="color:#ff5b5b">9.57%</td>
+        <td class="n" style="color:#ff5b5b;font-weight:700">+14.3%</td>
+        <td class="n" style="color:#888">62,100원</td>
+        <td class="n">626억</td>
+        <td class="n">3.17x</td>
+        <td class="n" style="color:#888">+0.0%</td>
       </tr>
       <tr>
-        <td class="name">
-          DB하이텍<span class="ticker">000990</span>
-        </td>
-        <td class="num" style="color:#e0e0e0">152,600원</td>
-        <td class="num" style="color:#4fc3f7">-1.36%</td>
-        <td class="num" style="color:#ff5b5b;font-weight:600">+1443.0%</td>
-        <td class="num" style="color:#888">9,890원</td>
-        <td class="num">962억</td>
-        <td class="num">140.75x</td>
-        <td class="num" style="color:#888">-905.5%</td>
+        <td class="name">덕양에너젠<span class="tc">0001A0</span></td>
+        <td class="n">19,500원</td>
+        <td class="n" style="color:#ff5b5b">14.04%</td>
+        <td class="n" style="color:#ff5b5b;font-weight:700">+13.6%</td>
+        <td class="n" style="color:#888">17,160원</td>
+        <td class="n">1,023억</td>
+        <td class="n">16.48x</td>
+        <td class="n" style="color:#888">+0.0%</td>
       </tr>
       <tr>
-        <td class="name">
-          한화<span class="ticker">000880</span>
-        </td>
-        <td class="num" style="color:#e0e0e0">132,500원</td>
-        <td class="num" style="color:#ff5b5b">2.63%</td>
-        <td class="num" style="color:#ff5b5b;font-weight:600">+1239.7%</td>
-        <td class="num" style="color:#888">9,890원</td>
-        <td class="num">285억</td>
-        <td class="num">41.83x</td>
-        <td class="num" style="color:#888">-2105.9%</td>
+        <td class="name">DB하이텍<span class="tc">000990</span></td>
+        <td class="n">152,600원</td>
+        <td class="n" style="color:#4fc3f7">-1.36%</td>
+        <td class="n" style="color:#ff5b5b;font-weight:700">+11.1%</td>
+        <td class="n" style="color:#888">137,400원</td>
+        <td class="n">962억</td>
+        <td class="n">0.68x</td>
+        <td class="n" style="color:#888">+0.0%</td>
       </tr>
       <tr>
-        <td class="name">
-          CJ대한통운<span class="ticker">000120</span>
-        </td>
-        <td class="num" style="color:#e0e0e0">101,800원</td>
-        <td class="num" style="color:#ff5b5b">.59%</td>
-        <td class="num" style="color:#ff5b5b;font-weight:600">+929.3%</td>
-        <td class="num" style="color:#888">9,890원</td>
-        <td class="num">60억</td>
-        <td class="num">8.88x</td>
-        <td class="num" style="color:#ffe600">+172.8%</td>
+        <td class="name">현대제철<span class="tc">004020</span></td>
+        <td class="n">45,750원</td>
+        <td class="n" style="color:#ff5b5b">3.74%</td>
+        <td class="n" style="color:#ff5b5b;font-weight:700">+10.9%</td>
+        <td class="n" style="color:#888">41,250원</td>
+        <td class="n">1,160억</td>
+        <td class="n">2.48x</td>
+        <td class="n" style="color:#888">+0.0%</td>
       </tr>
       <tr>
-        <td class="name">
-          유한양행<span class="ticker">000100</span>
-        </td>
-        <td class="num" style="color:#e0e0e0">93,200원</td>
-        <td class="num" style="color:#4fc3f7">-.53%</td>
-        <td class="num" style="color:#ff5b5b;font-weight:600">+842.4%</td>
-        <td class="num" style="color:#888">9,890원</td>
-        <td class="num">148억</td>
-        <td class="num">21.79x</td>
-        <td class="num" style="color:#888">-1795.4%</td>
+        <td class="name">두산<span class="tc">000150</span></td>
+        <td class="n">1,572,000원</td>
+        <td class="n" style="color:#4fc3f7">-.69%</td>
+        <td class="n" style="color:#ff5b5b;font-weight:700">+9.0%</td>
+        <td class="n" style="color:#888">1,442,000원</td>
+        <td class="n">821억</td>
+        <td class="n">0.80x</td>
+        <td class="n" style="color:#888">+0.0%</td>
       </tr>
       <tr>
-        <td class="name">
-          DL<span class="ticker">000210</span>
-        </td>
-        <td class="num" style="color:#e0e0e0">76,800원</td>
-        <td class="num" style="color:#ff5b5b">9.09%</td>
-        <td class="num" style="color:#ff5b5b;font-weight:600">+676.5%</td>
-        <td class="num" style="color:#888">9,890원</td>
-        <td class="num">294억</td>
-        <td class="num">43.02x</td>
-        <td class="num" style="color:#ffe600">+182.9%</td>
+        <td class="name">포스코퓨처엠<span class="tc">003670</span></td>
+        <td class="n">261,000원</td>
+        <td class="n" style="color:#4fc3f7">-.76%</td>
+        <td class="n" style="color:#ff5b5b;font-weight:700">+6.1%</td>
+        <td class="n" style="color:#888">246,000원</td>
+        <td class="n">898억</td>
+        <td class="n">0.76x</td>
+        <td class="n" style="color:#888">+0.0%</td>
       </tr>
       <tr>
-        <td class="name">
-          한화3우B<span class="ticker">00088K</span>
-        </td>
-        <td class="num" style="color:#e0e0e0">49,700원</td>
-        <td class="num" style="color:#ff5b5b">1.84%</td>
-        <td class="num" style="color:#ff5b5b;font-weight:600">+402.5%</td>
-        <td class="num" style="color:#888">9,890원</td>
-        <td class="num">23억</td>
-        <td class="num">3.48x</td>
-        <td class="num" style="color:#ffe600">+146.8%</td>
+        <td class="name">SK하이닉스<span class="tc">000660</span></td>
+        <td class="n">1,293,000원</td>
+        <td class="n" style="color:#4fc3f7">-.54%</td>
+        <td class="n" style="color:#ff5b5b;font-weight:700">+5.6%</td>
+        <td class="n" style="color:#888">1,225,000원</td>
+        <td class="n">38,913억</td>
+        <td class="n">0.59x</td>
+        <td class="n" style="color:#888">+0.0%</td>
       </tr>
       <tr>
-        <td class="name">
-          한국앤컴퍼니<span class="ticker">000240</span>
-        </td>
-        <td class="num" style="color:#e0e0e0">25,150원</td>
-        <td class="num" style="color:#ff5b5b">.2%</td>
-        <td class="num" style="color:#ff5b5b;font-weight:600">+154.3%</td>
-        <td class="num" style="color:#888">9,890원</td>
-        <td class="num">24억</td>
-        <td class="num">3.52x</td>
-        <td class="num" style="color:#888">-626.3%</td>
+        <td class="name">삼성화재<span class="tc">000810</span></td>
+        <td class="n">464,000원</td>
+        <td class="n" style="color:#4fc3f7">-3.93%</td>
+        <td class="n" style="color:#ff5b5b;font-weight:700">+0.2%</td>
+        <td class="n" style="color:#888">463,000원</td>
+        <td class="n">647억</td>
+        <td class="n">0.64x</td>
+        <td class="n" style="color:#888">+0.0%</td>
       </tr>
       <tr>
-        <td class="name">
-          삼화페인트<span class="ticker">000390</span>
-        </td>
-        <td class="num" style="color:#e0e0e0">9,940원</td>
-        <td class="num" style="color:#ff5b5b">1.33%</td>
-        <td class="num" style="color:#ff5b5b;font-weight:600">+0.5%</td>
-        <td class="num" style="color:#888">9,890원</td>
-        <td class="num">51억</td>
-        <td class="num">7.59x</td>
-        <td class="num" style="color:#888">+0.8%</td>
+        <td class="name">기아<span class="tc">000270</span></td>
+        <td class="n">156,900원</td>
+        <td class="n" style="color:#ff5b5b">.84%</td>
+        <td class="n" style="color:#4fc3f7;font-weight:700">-0.9%</td>
+        <td class="n" style="color:#888">158,400원</td>
+        <td class="n">1,133억</td>
+        <td class="n">0.64x</td>
+        <td class="n" style="color:#888">+0.0%</td>
       </tr>
       <tr>
-        <td class="name">
-          삼일제약<span class="ticker">000520</span>
-        </td>
-        <td class="num" style="color:#e0e0e0">9,100원</td>
-        <td class="num" style="color:#4fc3f7">-3.09%</td>
-        <td class="num" style="color:#4fc3f7;font-weight:600">-8.0%</td>
-        <td class="num" style="color:#888">9,890원</td>
-        <td class="num">40억</td>
-        <td class="num">5.87x</td>
-        <td class="num" style="color:#ffe600">+19.2%</td>
+        <td class="name">삼양식품<span class="tc">003230</span></td>
+        <td class="n">1,314,000원</td>
+        <td class="n" style="color:#ff5b5b">2.26%</td>
+        <td class="n" style="color:#4fc3f7;font-weight:700">-2.2%</td>
+        <td class="n" style="color:#888">1,344,000원</td>
+        <td class="n">553억</td>
+        <td class="n">1.05x</td>
+        <td class="n" style="color:#888">+0.0%</td>
       </tr>
       <tr>
-        <td class="name">
-          한화손해보험<span class="ticker">000370</span>
-        </td>
-        <td class="num" style="color:#e0e0e0">6,800원</td>
-        <td class="num" style="color:#ff5b5b">.59%</td>
-        <td class="num" style="color:#4fc3f7;font-weight:600">-31.2%</td>
-        <td class="num" style="color:#888">9,890원</td>
-        <td class="num">33억</td>
-        <td class="num">4.89x</td>
-        <td class="num" style="color:#888">-224.0%</td>
-      </tr>
-      <tr>
-        <td class="name">
-          LS네트웍스<span class="ticker">000680</span>
-        </td>
-        <td class="num" style="color:#e0e0e0">4,630원</td>
-        <td class="num" style="color:#ff5b5b">14.04%</td>
-        <td class="num" style="color:#4fc3f7;font-weight:600">-53.2%</td>
-        <td class="num" style="color:#888">9,890원</td>
-        <td class="num">299억</td>
-        <td class="num">43.79x</td>
-        <td class="num" style="color:#888">-87.8%</td>
+        <td class="name">현대건설<span class="tc">000720</span></td>
+        <td class="n">168,600원</td>
+        <td class="n" style="color:#ff5b5b">.9%</td>
+        <td class="n" style="color:#4fc3f7;font-weight:700">-3.9%</td>
+        <td class="n" style="color:#888">175,400원</td>
+        <td class="n">1,389억</td>
+        <td class="n">0.41x</td>
+        <td class="n" style="color:#888">+0.0%</td>
       </tr></tbody>
     </table>
   </div>
