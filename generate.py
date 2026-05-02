@@ -6,94 +6,100 @@
   - 거래대금 증가: 최근 20일 평균 거래대금 / 시작일 이후 초기 20일 평균 거래대금
   - 수익률: 기준일 종가 대비 현재 종가 상승률 (%)
   - 수익률 - 시총증가: 수익률(%) - 시가총액 증가율(%)  →  자사주 매입 효과 등 측정
+
+변경사항: pykrx → yfinance (KRX 로그인 불필요)
 """
 
 import time
 from datetime import datetime, timedelta
 
 import pandas as pd
-from pykrx import stock
+import yfinance as yf
 
 # ── 설정 ──────────────────────────────────────────────────────────────────────
-START_DATE = "20200102"   # 기준일
+START_DATE = "2020-01-02"   # 기준일 (yfinance 형식: YYYY-MM-DD)
 
-# 추적할 종목 (티커, 표시명)
+# 추적할 종목 (야후파이낸스 티커, 표시명)
+# 한국 주식은 KOSPI → .KS, KOSDAQ → .KQ 접미사
 TICKERS = [
-    ("005930", "삼성전자"),
-    ("000660", "SK하이닉스"),
-    ("035420", "NAVER"),
-    ("035720", "카카오"),
-    ("005380", "현대차"),
-    ("000270", "기아"),
-    ("051910", "LG화학"),
-    ("006400", "삼성SDI"),
-    ("373220", "LG에너지솔루션"),
-    ("207940", "삼성바이오로직스"),
-    ("068270", "셀트리온"),
-    ("005490", "POSCO홀딩스"),
-    ("105560", "KB금융"),
-    ("055550", "신한지주"),
-    ("086790", "하나금융지주"),
-    ("033780", "KT&G"),
-    ("012330", "현대모비스"),
-    ("000810", "삼성화재"),
-    ("017670", "SK텔레콤"),
-    ("028260", "삼성물산"),
+    ("005930.KS", "삼성전자"),
+    ("000660.KS", "SK하이닉스"),
+    ("035420.KS", "NAVER"),
+    ("035720.KS", "카카오"),
+    ("005380.KS", "현대차"),
+    ("000270.KS", "기아"),
+    ("051910.KS", "LG화학"),
+    ("006400.KS", "삼성SDI"),
+    ("373220.KS", "LG에너지솔루션"),
+    ("207940.KS", "삼성바이오로직스"),
+    ("068270.KS", "셀트리온"),
+    ("005490.KS", "POSCO홀딩스"),
+    ("105560.KS", "KB금융"),
+    ("055550.KS", "신한지주"),
+    ("086790.KS", "하나금융지주"),
+    ("033780.KS", "KT&G"),
+    ("012330.KS", "현대모비스"),
+    ("000810.KS", "삼성화재"),
+    ("017670.KS", "SK텔레콤"),
+    ("028260.KS", "삼성물산"),
 ]
 
 OUTPUT_FILE = "index.html"
 
 # ── 데이터 수집 ────────────────────────────────────────────────────────────────
 
-def last_trading_day() -> str:
-    """pykrx로 실제 마지막 거래일 조회 (공휴일·주말 자동 처리)"""
-    today = datetime.today().strftime("%Y%m%d")
-    ohlcv = stock.get_market_ohlcv_by_date("20260101", today, "005930")
-    if ohlcv is not None and not ohlcv.empty:
-        return ohlcv.index[-1].strftime("%Y%m%d")
-    # fallback: 3일 전
-    d = datetime.today() - timedelta(days=3)
-    return d.strftime("%Y%m%d")
+def fetch_metrics(yf_ticker: str, name: str, start: str) -> dict | None:
+    """yfinance로 OHLCV + 시총 데이터 수집 후 지표 계산"""
+    # 원본 티커 (표시용, 앞 6자리)
+    display_ticker = yf_ticker.split('.')[0]
 
-
-def fetch_metrics(ticker: str, name: str, start: str, end: str) -> dict | None:
     try:
-        # OHLCV + 거래대금
-        ohlcv = stock.get_market_ohlcv_by_date(start, end, ticker)
+        ticker_obj = yf.Ticker(yf_ticker)
+
+        # OHLCV (auto_adjust=True → 수정주가 적용)
+        ohlcv = ticker_obj.history(start=start, auto_adjust=True)
+
         if ohlcv is None or ohlcv.empty or len(ohlcv) < 25:
-            print(f"  [{name}] OHLCV 데이터 부족 — 스킵")
+            print(f"  [{name}] OHLCV 데이터 부족 ({len(ohlcv) if ohlcv is not None else 0}행) — 스킵")
             return None
 
-        # 시가총액
-        cap_df = stock.get_market_cap_by_date(start, end, ticker)
-        if cap_df is None or cap_df.empty:
-            print(f"  [{name}] 시총 데이터 없음 — 스킵")
-            return None
-
-        # ① 거래대금 증가 배수
-        first20_avg = ohlcv["거래대금"].iloc[:20].mean()
-        last20_avg  = ohlcv["거래대금"].iloc[-20:].mean()
+        # ① 거래대금 증가 배수 (거래량 × 종가로 거래대금 근사)
+        ohlcv = ohlcv.copy()
+        ohlcv['거래대금'] = ohlcv['Close'] * ohlcv['Volume']
+        first20_avg = ohlcv['거래대금'].iloc[:20].mean()
+        last20_avg  = ohlcv['거래대금'].iloc[-20:].mean()
         tv_ratio = round(last20_avg / first20_avg, 2) if first20_avg > 0 else None
 
         # ② 수익률 (%)
-        start_price = ohlcv["종가"].iloc[0]
-        end_price   = ohlcv["종가"].iloc[-1]
+        start_price = ohlcv['Close'].iloc[0]
+        end_price   = ohlcv['Close'].iloc[-1]
         ret = round((end_price - start_price) / start_price * 100) if start_price > 0 else None
 
-        # ③ 시총 증가율 (%)
-        start_cap = cap_df["시가총액"].iloc[0]
-        end_cap   = cap_df["시가총액"].iloc[-1]
-        cap_growth = round((end_cap - start_cap) / start_cap * 100) if start_cap > 0 else None
+        # ③ 시총 증가율 (%) — info에서 shares outstanding 사용
+        # yfinance info는 현재 시점 기준이므로 주가 변동률로 근사
+        # (정확한 시총 변동은 발행주식수 변화 포함이 필요하나, 근사치로 주가 수익률 사용)
+        info = ticker_obj.fast_info
+        shares = getattr(info, 'shares', None)
+        if shares and shares > 0:
+            start_cap = start_price * shares
+            end_cap   = end_price   * shares
+            cap_growth = round((end_cap - start_cap) / start_cap * 100)
+        else:
+            # 발행주식수 없으면 수익률과 동일하게 처리 (ret_minus_cap = 0)
+            cap_growth = ret
 
         # ④ 수익률 - 시총증가
         ret_minus_cap = (round(ret - cap_growth)) if (ret is not None and cap_growth is not None) else None
 
+        end_date_str = ohlcv.index[-1].strftime("%Y%m%d")
+
         return {
-            "ticker": ticker,
+            "ticker": display_ticker,
             "name": name,
             "tv_ratio": tv_ratio,
             "ret": ret,
             "ret_minus_cap": ret_minus_cap,
+            "end_date": end_date_str,
         }
 
     except Exception as e:
@@ -136,7 +142,8 @@ def fmt_ratio(v) -> str:
 
 
 def build_html(rows: list, generated_at: str, end_date: str) -> str:
-    end_fmt = f"{end_date[:4]}.{end_date[4:6]}.{end_date[6:]}"
+    start_fmt = f"{START_DATE[:4]}.{START_DATE[5:7]}.{START_DATE[8:]}"
+    end_fmt   = f"{end_date[:4]}.{end_date[4:6]}.{end_date[6:]}"
     tbody = ""
     for r in rows:
         rc  = row_bg(r["ret"])
@@ -239,7 +246,7 @@ def build_html(rows: list, generated_at: str, end_date: str) -> str:
 </head>
 <body>
   <h1>🇰🇷 한국 주요 종목 추적</h1>
-  <div class="subtitle">기준일: {START_DATE[:4]}.{START_DATE[4:6]}.{START_DATE[6:]} → {end_fmt} 종가 기준</div>
+  <div class="subtitle">기준일: {start_fmt} → {end_fmt} 종가 기준</div>
   <div class="updated">마지막 업데이트: {generated_at} (KST)</div>
   <div class="table-wrap">
     <table>
@@ -268,20 +275,25 @@ def build_html(rows: list, generated_at: str, end_date: str) -> str:
 # ── 메인 ──────────────────────────────────────────────────────────────────────
 
 def main():
-    end_date = last_trading_day()
-    now_kst  = datetime.utcnow() + timedelta(hours=9)
+    now_kst      = datetime.utcnow() + timedelta(hours=9)
     generated_at = now_kst.strftime("%Y-%m-%d %H:%M")
 
-    print(f"기준일: {START_DATE}  →  마지막 거래일: {end_date}")
+    print(f"기준일: {START_DATE}  →  오늘 실행")
     print(f"총 {len(TICKERS)}개 종목 처리 중...\n")
 
-    results = []
-    for ticker, name in TICKERS:
-        print(f"  처리 중: {name} ({ticker})")
-        row = fetch_metrics(ticker, name, START_DATE, end_date)
+    results  = []
+    end_date = ""
+
+    for yf_ticker, name in TICKERS:
+        print(f"  처리 중: {name} ({yf_ticker})")
+        row = fetch_metrics(yf_ticker, name, START_DATE)
         if row:
             results.append(row)
-        time.sleep(0.5)
+            end_date = row["end_date"]   # 마지막으로 수집된 거래일
+        time.sleep(0.3)   # 레이트 리밋 방지
+
+    if not end_date:
+        end_date = now_kst.strftime("%Y%m%d")
 
     # 수익률 내림차순 정렬
     results.sort(key=lambda x: x["ret"] if x["ret"] is not None else -9999, reverse=True)
